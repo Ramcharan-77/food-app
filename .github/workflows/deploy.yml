@@ -39,10 +39,16 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
-          node --check shared/utils.js
-          node --check menu-page/menu.js
-          node --check cart-page/cart.js
-          echo "No JavaScript syntax errors found!"
+            node --check shared/utils.js
+            node --check menu-module/menu.js
+            node --check cart-module/cart.js
+            echo "No JavaScript syntax errors found!"
+  
+      - name: Check HTML files for errors
+        run: |
+            npx htmlhint index.html menu-module/index.html cart-module/index.html
+            echo "All HTML files passed!"
+  
 
   # Job 2: CD
   deploy-site:

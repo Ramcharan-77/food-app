@@ -1,21 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Menu - Food App</title>
-  <link rel="stylesheet" href="../shared/style.css" />
-</head>
-<body>
-  <nav>
-    <a href="../index.html">Home</a>
-    <a href="./index.html">Menu</a>
-    <a href="../cart-page/index.html">Cart</a>
-  </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu - FoodApp</title>
+    <link rel="stylesheet" href="../shared/style.css" />
+  </head>
+  <body data-root="..">
+    <main class="container">
+      <h1>Explore Menu</h1>
 
-  <h1>Our Menu</h1>
-  <div id="menu-list" style="margin-top: 16px;"></div>
+      <!-- Search & Category Filter Bar -->
+      <div class="filter-bar">
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search biryani, dosa, dessert..."
+        />
+        <div id="category-pills" class="pill-group"></div>
+      </div>
 
-  <script src="../shared/utils.js"></script>
-  <script src="./menu.js"></script>
-</body>
+      <div id="menu-list" class="food-grid"></div>
+
+      <div id="scroll-sentinel" style="text-align: center; padding: 24px; color: var(--text-muted)">
+        Loading more dishes...
+      </div>
+    </main>
+
+    <script src="../shared/utils.js"></script>
+    <script src="./menu.js"></script>
+  </body>
 </html>

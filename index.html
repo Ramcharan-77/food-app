@@ -1,15 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food App</title>
-</head>
-<body>
-    <h1>Wellcome to food App</h1>
-    <ul>
-        <li><a href="./menu-page/index.html">Go to menu</a></li>
-        <li><a href="./cart-page/index.html">Go to cart</a></li>
-    </ul>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodApp - Fresh Food Delivered Fast</title>
+    <link rel="stylesheet" href="./shared/style.css" />
+  </head>
+  <body data-root=".">
+    <main class="container">
+      <!-- Hero Banner -->
+      <section
+        class="card"
+        style="
+          background: linear-gradient(135deg, #ff5722, #ff8a65);
+          color: #ffffff;
+          border: none;
+          padding: 36px 24px;
+          margin-bottom: 28px;
+        "
+      >
+        <div style="max-width: 600px">
+          <span
+            class="badge"
+            style="background: rgba(255, 255, 255, 0.2); color: #ffffff; margin-bottom: 12px"
+          >
+            30-Min Express Delivery
+          </span>
+          <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 12px">
+            Craving Authentic Biryani or Crispy Dosa?
+          </h1>
+          <p style="margin-bottom: 20px; opacity: 0.95">
+            Freshly prepared meals delivered straight to your doorstep. Free delivery on orders
+            above ₹300!
+          </p>
+          <a
+            href="./menu-page/index.html"
+            class="btn"
+            style="background: #ffffff; color: var(--primary); font-weight: 800"
+          >
+            Explore Full Menu
+          </a>
+        </div>
+      </section>
+
+      <!-- Quick Category Shortcuts -->
+      <section style="margin-bottom: 32px">
+        <h2 style="font-size: 1.35rem; margin-bottom: 14px">What's on your mind?</h2>
+        <div class="pill-group">
+          <a href="./menu-page/index.html?cat=Biryani" class="pill" style="text-decoration: none"
+            >Biryani</a
+          >
+          <a
+            href="./menu-page/index.html?cat=South%20Indian"
+            class="pill"
+            style="text-decoration: none"
+            >South Indian</a
+          >
+          <a
+            href="./menu-page/index.html?cat=North%20Indian"
+            class="pill"
+            style="text-decoration: none"
+            >North Indian</a
+          >
+          <a href="./menu-page/index.html?cat=Starters" class="pill" style="text-decoration: none"
+            >Starters</a
+          >
+          <a href="./menu-page/index.html?cat=Dessert" class="pill" style="text-decoration: none"
+            >Desserts</a
+          >
+          <a href="./menu-page/index.html?cat=Beverages" class="pill" style="text-decoration: none"
+            >Beverages</a
+          >
+        </div>
+      </section>
+
+      <!-- Featured Dishes Section -->
+      <section>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+          "
+        >
+          <h2 style="font-size: 1.35rem">Today's Bestsellers</h2>
+          <a
+            href="./menu-page/index.html"
+            style="color: var(--primary); font-weight: 700; text-decoration: none"
+          >
+            View All &rarr;
+          </a>
+        </div>
+
+        <div id="featured-list" class="food-grid"></div>
+      </section>
+    </main>
+
+    <script src="./shared/utils.js"></script>
+    <script>
+      const featuredItems = [
+        {
+          id: 1,
+          name: "Hyderabadi Chicken Dum Biryani",
+          category: "Biryani",
+          veg: false,
+          price: 260,
+          desc: "Aromatic basmati rice layered with spiced tender chicken.",
+        },
+        {
+          id: 3,
+          name: "Ghee Roast Masala Dosa",
+          category: "South Indian",
+          veg: true,
+          price: 110,
+          desc: "Crispy golden dosa stuffed with spiced potato masala.",
+        },
+        {
+          id: 2,
+          name: "Paneer Butter Masala",
+          category: "North Indian",
+          veg: true,
+          price: 220,
+          desc: "Cottage cheese cubes simmered in rich creamy tomato gravy.",
+        },
+      ];
+
+      const featuredContainer = document.getElementById("featured-list");
+
+      featuredItems.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div>
+            <div class="diet-badge">
+              <span class="diet-dot ${item.veg ? "diet-veg" : "diet-nonveg"}"></span>
+              <span>${item.veg ? "VEG" : "NON-VEG"} • ${item.category}</span>
+            </div>
+            <h3 class="card-title">${item.name}</h3>
+            <p class="card-desc">${item.desc}</p>
+          </div>
+          <div>
+            <p class="price-tag">${formatPrice(item.price)}</p>
+            <button class="btn btn-full" onclick='addToCart(${JSON.stringify(item)})'>Add to Cart</button>
+          </div>
+        `;
+        featuredContainer.appendChild(card);
+      });
+    </script>
+  </body>
 </html>

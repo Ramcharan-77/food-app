@@ -1,22 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Cart - Food App</title>
-  <link rel="stylesheet" href="../shared/style.css" />
-</head>
-<body>
-  <nav>
-    <a href="../index.html">Home</a>
-    <a href="../menu-page/index.html">Menu</a>
-    <a href="./index.html">Cart</a>
-  </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart - FoodApp</title>
+    <link rel="stylesheet" href="../shared/style.css" />
+  </head>
+  <body data-root="..">
+    <main class="container">
+      <h1>Your Cart</h1>
 
-  <h1>Your Cart</h1>
-  <div id="cart-list" style="margin-top: 16px;"></div>
-  <h2 id="total-price" style="margin-top: 20px;">Total: ₹0.00</h2>
+      <div
+        id="free-delivery-banner"
+        class="card"
+        style="margin-bottom: 16px; background: #fff7ed; border-color: #fed7aa"
+      ></div>
 
-  <script src="../shared/utils.js"></script>
-  <script src="./cart.js"></script>
-</body>
+      <div id="cart-list" style="display: flex; flex-direction: column; gap: 12px"></div>
+
+      <!-- Bill Summary & Checkout Card -->
+      <div id="bill-box" class="card" style="margin-top: 24px; display: none">
+        <h2 style="font-size: 1.2rem; margin-bottom: 8px">Bill Details</h2>
+        <div class="summary-row"><span>Item Total</span><span id="sub-total">₹0.00</span></div>
+        <div class="summary-row"><span>Delivery Fee</span><span id="delivery-fee">₹0.00</span></div>
+        <div class="summary-row"><span>Taxes (5% GST)</span><span id="tax-amount">₹0.00</span></div>
+        <div class="summary-row" style="font-weight: 800; font-size: 1.15rem; border: none">
+          <span>To Pay</span><span id="grand-total">₹0.00</span>
+        </div>
+
+        <input
+          type="text"
+          id="address-input"
+          class="search-input"
+          placeholder="Enter delivery address (e.g., Madhapur, Hyderabad)"
+          style="margin: 12px 0"
+        />
+        <button class="btn btn-full" onclick="handleCheckout()">Place Order</button>
+      </div>
+    </main>
+
+    <script src="../shared/utils.js"></script>
+    <script src="./cart.js"></script>
+  </body>
 </html>
