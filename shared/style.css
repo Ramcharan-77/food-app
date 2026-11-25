@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  body {
+    background-color: #f9fafb;
+    color: #1f2937;
+    padding: 20px;
+  }
+  
+  nav {
+    display: flex;
+    gap: 16px;
+    background-color: #ff5722;
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  
+  nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  
+  button {
+    background-color: #ff5722;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  button:hover {
+    background-color: #e64a19;
+  }
+  
