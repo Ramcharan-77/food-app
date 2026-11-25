@@ -1,54 +1,368 @@
+/* =========================================================
+   1. DESIGN TOKENS (Change colors/fonts here for all pages)
+   ========================================================= */
+:root {
+  --primary: #ff5722;
+  --primary-hover: #e64a19;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --bg-body: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+}
+
+/* =========================================================
+   2. RESET & BASE STYLES (Applies to every HTML file)
+   ========================================================= */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.5;
+  padding-bottom: 40px;
+}
+
+/* Main centered wrapper for all pages */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 16px;
+}
+
+/* =========================================================
+   3. RESPONSIVE NAVBAR (Desktop row -> Mobile friendly)
+   ========================================================= */
+.navbar {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-bottom: 24px;
+}
+
+.navbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: #fff3ee;
+  color: var(--primary);
+}
+
+/* =========================================================
+   4. RESPONSIVE FOOD GRID (1 col phone -> 2 tablet -> 3 desktop)
+   ========================================================= */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* =========================================================
+   5. REUSABLE CARDS & FOOD COMPONENTS
+   ========================================================= */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.price-tag {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background-color: #dcfce7;
+  color: #166534;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+
+/* =========================================================
+   6. REUSABLE BUTTONS (Touch-friendly on mobile)
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  min-height: 42px; /* Easy thumb tap on phones */
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-hover);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* =========================================================
+   7. DEVICE-SPECIFIC MOBILE ADJUSTMENTS (< 600px screens)
+   ========================================================= */
+@media (max-width: 600px) {
+  .navbar-inner {
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  body {
-    background-color: #f9fafb;
-    color: #1f2937;
-    padding: 20px;
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-around;
   }
-  
-  nav {
-    display: flex;
-    gap: 16px;
-    background-color: #ff5722;
-    padding: 14px 20px;
-    border-radius: 8px;
-    margin-bottom: 24px;
+
+  h1 {
+    font-size: 1.4rem;
   }
-  
-  nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 600;
+}
+
+/* card-title */
+.cart-badge {
+  background-color: var(--primary);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+/* =========================================================
+   TOAST NOTIFICATION (Desktop bottom-right -> Mobile bottom bar)
+   ========================================================= */
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #1e293b;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid var(--primary);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: none;
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-notification.danger {
+  border-left-color: var(--danger);
+}
+
+@media (max-width: 600px) {
+  .toast-notification {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    text-align: center;
   }
-  
-  nav a:hover {
-    text-decoration: underline;
-  }
-  
-  .card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  
-  button {
-    background-color: #ff5722;
-    color: #ffffff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  
-  button:hover {
-    background-color: #e64a19;
-  }
-  
+}
+/* =========================================================
+   8. SEARCH, FILTER PILLS & QUANTITY STEPPERS
+   ========================================================= */
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: var(--bg-card);
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+}
+
+.pill-group {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.pill {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* Veg / Non-Veg Dot Indicator */
+.diet-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.diet-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.diet-veg {
+  background-color: #16a34a;
+}
+.diet-nonveg {
+  background-color: #dc2626;
+}
+
+/* Cart Quantity Controls (- 1 +) */
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 10px;
+  background: var(--bg-body);
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0 4px;
+  min-height: auto;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}

@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 jobs:
-  # Job 1: CI Checks
+  # JOB 1: CI Check (Runs on every Pull Request & Push)
   check-pages:
     name: Check Menu, Cart & Shared Files
     runs-on: ubuntu-latest
@@ -44,7 +44,12 @@ jobs:
           node --check cart-page/cart.js
           echo "No JavaScript syntax errors found!"
 
-  # Job 2: CD
+      - name: Check HTML files for errors
+        run: |
+          npx htmlhint index.html menu-page/index.html cart-page/index.html
+          echo "All HTML files passed!"
+
+  # JOB 2: CD Deploy (Runs only when merged into main)
   deploy-site:
     name: Deploy to GitHub Pages
     needs: check-pages
@@ -60,7 +65,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: "."
 
       - name: Deploy to GitHub Pages
         id: deployment
