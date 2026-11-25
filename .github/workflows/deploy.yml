@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 jobs:
-  # JOB 1: CI Check (Runs on every Pull Request & Push)
+  # JOB 1: CI Check (2 spaces indent)
   check-pages:
     name: Check Menu, Cart & Shared Files
     runs-on: ubuntu-latest
@@ -49,30 +49,30 @@ jobs:
           npx htmlhint index.html menu-page/index.html cart-page/index.html
           echo "All HTML files passed!"
 
-          # JOB 2: CD Deploy (Runs only when merged into main)
-          deploy-site:
-            name: Deploy to GitHub Pages
-            needs: check-pages
-            if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-            environment:
-              name: github-pages
-              url: ${{ steps.deployment.outputs.page_url }}
-            runs-on: ubuntu-latest
-            steps:
-              - name: Checkout code
-                uses: actions/checkout@v4
+  # JOB 2: CD Deploy (2 spaces indent — aligned with check-pages)
+  deploy-site:
+    name: Deploy to GitHub Pages
+    needs: check-pages
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-              - name: Prepare clean site folder
-                run: |
-                  mkdir -p _site
-                  cp index.html _site/
-                  cp -r shared menu-page cart-page _site/
+      - name: Prepare clean site folder
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -r shared menu-page cart-page _site/
 
-              - name: Upload artifact
-                uses: actions/upload-pages-artifact@v3
-                with:
-                  path: '_site'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"
 
-              - name: Deploy to GitHub Pages
-                id: deployment
-                uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
