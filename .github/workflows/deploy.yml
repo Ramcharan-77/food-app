@@ -49,24 +49,30 @@ jobs:
           npx htmlhint index.html menu-page/index.html cart-page/index.html
           echo "All HTML files passed!"
 
-  # JOB 2: CD Deploy (Runs only when merged into main)
-  deploy-site:
-    name: Deploy to GitHub Pages
-    needs: check-pages
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+          # JOB 2: CD Deploy (Runs only when merged into main)
+          deploy-site:
+            name: Deploy to GitHub Pages
+            needs: check-pages
+            if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+            environment:
+              name: github-pages
+              url: ${{ steps.deployment.outputs.page_url }}
+            runs-on: ubuntu-latest
+            steps:
+              - name: Checkout code
+                uses: actions/checkout@v4
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "."
+              - name: Prepare clean site folder
+                run: |
+                  mkdir -p _site
+                  cp index.html _site/
+                  cp -r shared menu-page cart-page _site/
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+              - name: Upload artifact
+                uses: actions/upload-pages-artifact@v3
+                with:
+                  path: '_site'
+
+              - name: Deploy to GitHub Pages
+                id: deployment
+                uses: actions/deploy-pages@v4
