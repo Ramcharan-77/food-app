@@ -1,0 +1,67 @@
+name: Food App CI/CD
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # Job 1: CI Checks
+  check-pages:
+    name: Check Menu, Cart & Shared Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify all required files exist
+        run: |
+          for file in \
+            "index.html" \
+            "shared/style.css" \
+            "shared/utils.js" \
+            "menu-page/index.html" \
+            "menu-page/menu.js" \
+            "cart-page/index.html" \
+            "cart-page/cart.js"; do
+            if [ ! -f "$file" ]; then
+              echo "ERROR: $file is missing!"
+              exit 1
+            fi
+          done
+          echo "All root, shared, menu-page, and cart-page files exist!"
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check shared/utils.js
+          node --check menu-page/menu.js
+          node --check cart-page/cart.js
+          echo "No JavaScript syntax errors found!"
+
+  # Job 2: CD
+  deploy-site:
+    name: Deploy to GitHub Pages
+    needs: check-pages
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
