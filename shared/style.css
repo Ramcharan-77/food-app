@@ -1,263 +1,624 @@
+@import url("https://googleapis.com");
+
 /* =========================================================
-   1. DESIGN TOKENS (Change colors/fonts here for all pages)
+   1. FLAGSHIP DESIGN TOKENS (Single Source of Truth)
    ========================================================= */
 :root {
-  --primary: #ff5722;
-  --primary-hover: #e64a19;
-  --danger: #dc2626;
-  --danger-hover: #b91c1c;
-  --bg-body: #f8fafc;
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-glow: rgba(16, 185, 129, 0.28);
+  --primary-soft: rgba(16, 185, 129, 0.12);
+  --accent: #f97316;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --success: #16a34a;
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --warning-text: #d97706;
+
+  --bg-body: #f4f6f9;
+  --bg-muted: #eaedf2;
   --bg-card: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.78);
   --text-main: #0f172a;
   --text-muted: #64748b;
-  --border: #e2e8f0;
-  --radius: 12px;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+  --border: rgba(15, 23, 42, 0.08);
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 2px 6px rgba(15, 23, 42, 0.03), 0 12px 28px -6px rgba(15, 23, 42, 0.07);
+  --shadow-hover: 0 20px 38px -10px rgba(16, 185, 129, 0.22), 0 6px 16px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 28px 60px -12px rgba(15, 23, 42, 0.35);
+  --spring: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Replace @media (prefers-color-scheme: dark) with this: */
+[data-theme="dark"] {
+  --bg-body: #090d16;
+  --bg-muted: #131b2b;
+  --bg-card: #111827;
+  --bg-glass: rgba(17, 24, 39, 0.78);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.08);
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Theme Toggle Pill Button in Navbar */
+.theme-btn {
+  background: var(--bg-muted);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--spring);
+}
+
+.theme-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* =========================================================
-   2. RESET & BASE STYLES (Applies to every HTML file)
+   2. RESET, AMBIENT MESH & FLOATING GLASS NAVBAR
    ========================================================= */
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family:
+    "Plus Jakarta Sans",
     system-ui,
     -apple-system,
-    "Segoe UI",
-    Roboto,
     sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background-color: var(--bg-body);
+  background-image:
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(249, 115, 22, 0.08) 0px, transparent 40%);
+  background-attachment: fixed;
   color: var(--text-main);
-  line-height: 1.5;
-  padding-bottom: 40px;
+  line-height: 1.55;
+  padding-bottom: 64px;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Main centered wrapper for all pages */
-.container {
+.container,
+.navbar-inner {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 20px;
 }
 
 h1 {
-  font-size: 1.75rem;
-  margin-bottom: 16px;
+  font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  margin-bottom: 20px;
 }
 
-/* =========================================================
-   3. RESPONSIVE NAVBAR (Desktop row -> Mobile friendly)
-   ========================================================= */
 .navbar {
-  background-color: var(--bg-card);
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
-  margin-bottom: 24px;
+  margin-bottom: 30px;
 }
 
-.navbar-inner {
+.navbar-inner,
+.summary-row,
+.payment-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 16px;
-  max-width: 1100px;
-  margin: 0 auto;
+  gap: 12px;
+}
+
+.navbar-inner {
+  padding: 14px 20px;
+  flex-wrap: wrap;
 }
 
 .brand {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  color: var(--primary);
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, var(--primary) 0%, #34d399 60%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-decoration: none;
 }
 
 .nav-links {
   display: flex;
-  gap: 16px;
+  gap: 6px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-main);
+  color: var(--text-muted);
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 6px 10px;
-  border-radius: 8px;
-  transition: background 0.2s;
+  font-size: 0.92rem;
+  padding: 8px 15px;
+  border-radius: 999px;
+  transition: all var(--spring);
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  background-color: #fff3ee;
+  background: var(--primary-soft);
   color: var(--primary);
 }
 
+.cart-badge {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 5px;
+  box-shadow: 0 2px 8px var(--primary-glow);
+}
 /* =========================================================
-   4. RESPONSIVE FOOD GRID (1 col phone -> 2 tablet -> 3 desktop)
+   3. FLAGSHIP DISH CARDS, PHOTO ZOOM & TACTILE BUTTONS
    ========================================================= */
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 22px;
 }
 
-/* =========================================================
-   5. REUSABLE CARDS & FOOD COMPONENTS
-   ========================================================= */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 18px;
-  box-shadow: var(--shadow);
+  padding: 20px;
+  box-shadow: var(--shadow), var(--highlight);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.15s ease;
+  transition:
+    transform var(--spring),
+    box-shadow var(--spring),
+    border-color var(--spring);
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover), var(--highlight);
+  border-color: rgba(16, 185, 129, 0.35);
 }
 
 .card-title {
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 6px;
 }
-
 .card-desc {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
-
 .price-tag {
-  font-size: 1.15rem;
+  font-size: 1.28rem;
   font-weight: 800;
-  color: var(--text-main);
+  letter-spacing: -0.02em;
   margin-bottom: 14px;
 }
 
-.badge {
-  display: inline-block;
-  padding: 3px 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  border-radius: 999px;
-  background-color: #dcfce7;
-  color: #166534;
-  margin-bottom: 8px;
-  width: fit-content;
+.dish-img-wrapper {
+  margin: 6px 0 16px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-muted);
+  position: relative;
 }
 
-/* =========================================================
-   6. REUSABLE BUTTONS (Touch-friendly on mobile)
-   ========================================================= */
+.dish-img,
+.dish-fallback {
+  width: 100%;
+  height: 185px;
+  border-radius: var(--radius-sm);
+}
+
+.dish-img {
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .dish-img {
+  transform: scale(1.08);
+}
+
+.dish-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-soft), rgba(249, 115, 22, 0.12));
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #fff;
   border: none;
-  padding: 10px 16px;
-  min-height: 42px; /* Easy thumb tap on phones */
-  border-radius: 8px;
+  padding: 12px 20px;
+  min-height: 46px;
+  border-radius: var(--radius-sm);
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.2s;
+  box-shadow:
+    0 6px 16px -4px var(--primary-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all var(--spring);
 }
 
 .btn:hover {
-  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -4px var(--primary-glow);
 }
-
+.btn:active {
+  transform: scale(0.96);
+}
 .btn-danger {
-  background-color: var(--danger);
+  background: linear-gradient(135deg, var(--danger), var(--danger-hover));
+  box-shadow: 0 6px 16px -4px rgba(239, 68, 68, 0.35);
 }
-
-.btn-danger:hover {
-  background-color: var(--danger-hover);
-}
-
 .btn-full {
   width: 100%;
 }
 
 /* =========================================================
-   7. DEVICE-SPECIFIC MOBILE ADJUSTMENTS (< 600px screens)
+   4. FLOATING SEARCH BAR, PILLS, DIET DOTS & STEPPERS
    ========================================================= */
-@media (max-width: 600px) {
-  .navbar-inner {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .nav-links {
-    width: 100%;
-    justify-content: space-around;
-  }
-
-  h1 {
-    font-size: 1.4rem;
-  }
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
 }
 
-/* card-title */
-.cart-badge {
-  background-color: var(--primary);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 2px 7px;
+.search-input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.96rem;
+  color: var(--text-main);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow:
+    0 0 0 4px var(--primary-soft),
+    var(--shadow);
+}
+
+.pill-group,
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pill-group::-webkit-scrollbar,
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.pill {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
   border-radius: 999px;
-  margin-left: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--spring);
+}
+
+.pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+.pill.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.diet-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.diet-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.diet-veg {
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+}
+.diet-nonveg {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  background: var(--bg-muted);
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.summary-row {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
 }
 /* =========================================================
-   TOAST NOTIFICATION (Desktop bottom-right -> Mobile bottom bar)
+   5. SEGMENTED TABS, TABLES & SOFT STATUS PILLS
    ========================================================= */
+.tabs {
+  background: var(--bg-muted);
+  padding: 5px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 9px 18px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  border-radius: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--spring);
+}
+
+.tab-btn.active {
+  background: var(--bg-card);
+  color: var(--text-main);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+th,
+td {
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  background: var(--bg-muted);
+  font-weight: 700;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+tr:last-child td {
+  border-bottom: none;
+}
+
+.badge,
+.status-pill {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: var(--primary-soft);
+  color: var(--primary);
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.badge {
+  margin-bottom: 8px;
+}
+.status-pill.success {
+  background: rgba(22, 163, 74, 0.14);
+  color: var(--success);
+}
+.status-pill.warning {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+.status-pill.danger {
+  background: rgba(239, 68, 68, 0.14);
+  color: var(--danger);
+}
+
+/* =========================================================
+   6. GLASS PAYMENT MODAL, FLOATING TOAST & MOBILE SHEET
+   ========================================================= */
+.payment-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.65);
+  backdrop-filter: blur(8px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.payment-overlay.active {
+  display: flex;
+}
+
+.payment-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  width: 92%;
+  max-width: 400px;
+  padding: 28px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg), var(--highlight);
+  text-align: center;
+  animation: popIn var(--spring);
+}
+
+.payment-header h3 {
+  margin: 12px 0 8px;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+#paymentText {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.payment-actions button {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: var(--bg-muted);
+  color: var(--text-main);
+}
+.btn-pay {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #fff;
+}
+
 .toast-notification {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background-color: #1e293b;
-  color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 0.95rem;
+  background: #0f172a;
+  color: #fff;
+  padding: 13px 22px;
+  border-radius: 999px;
+  font-size: 0.9rem;
   font-weight: 600;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  border-left: 4px solid var(--primary);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   z-index: 9999;
   opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
+  transform: translateY(20px) scale(0.95);
+  transition: all var(--spring);
   pointer-events: none;
 }
 
 .toast-notification.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
-
 .toast-notification.danger {
-  border-left-color: var(--danger);
+  background: var(--danger);
 }
 
-@media (max-width: 600px) {
+@keyframes popIn {
+  from {
+    transform: scale(0.9) translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar-inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 16px;
+  }
+  .nav-links {
+    justify-content: space-between;
+  }
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+  .payment-overlay {
+    align-items: flex-end;
+  }
+  .payment-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0;
+  }
   .toast-notification {
     left: 16px;
     right: 16px;
@@ -265,104 +626,162 @@ h1 {
     text-align: center;
   }
 }
+
 /* =========================================================
-   8. SEARCH, FILTER PILLS & QUANTITY STEPPERS
+   9. FLOATING CART BAR, DISH PREVIEW MODAL & MOBILE BOTTOM NAV
    ========================================================= */
-.filter-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 1rem;
-  background: var(--bg-card);
-  outline: none;
-}
-
-.search-input:focus {
-  border-color: var(--primary);
-}
-
-.pill-group {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.pill {
-  background: var(--bg-card);
-  color: var(--text-main);
-  border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.pill.active {
-  background: var(--primary);
+/* Floating View Cart Pill (Shows when cart has items) */
+.floating-cart-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  width: calc(100% - 32px);
+  max-width: 520px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
   color: #ffffff;
-  border-color: var(--primary);
-}
-
-/* Veg / Non-Veg Dot Indicator */
-.diet-badge {
-  display: inline-flex;
+  padding: 14px 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
-  font-size: 0.75rem;
+  text-decoration: none;
   font-weight: 700;
-  margin-bottom: 6px;
+  box-shadow: 0 12px 30px var(--primary-glow);
+  z-index: 950;
+  transition: transform var(--spring);
 }
 
-.diet-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
+.floating-cart-bar.visible {
+  transform: translateX(-50%) translateY(0);
 }
 
-.diet-veg {
-  background-color: #16a34a;
-}
-.diet-nonveg {
-  background-color: #dc2626;
-}
-
-/* Cart Quantity Controls (- 1 +) */
-.qty-controls {
-  display: inline-flex;
+/* Full Dish Preview Bottom-Sheet / Modal */
+.dish-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.65);
+  backdrop-filter: blur(8px);
+  justify-content: center;
   align-items: center;
-  gap: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 4px 10px;
-  background: var(--bg-body);
+  z-index: 9998;
 }
 
-.qty-btn {
-  background: none;
+.dish-modal-overlay.active {
+  display: flex;
+}
+
+.dish-modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  width: 92%;
+  max-width: 480px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: popIn var(--spring);
+  position: relative;
+}
+
+.dish-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: none;
-  color: var(--primary);
+  background: rgba(15, 23, 42, 0.65);
+  color: #ffffff;
   font-size: 1.2rem;
   font-weight: 800;
   cursor: pointer;
-  padding: 0 4px;
-  min-height: auto;
+  z-index: 2;
 }
 
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
+.dish-modal-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-muted);
+}
+
+.dish-modal-body {
+  padding: 22px;
+}
+
+/* Mobile-Only Bottom Navigation Dock (< 640px) */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-bottom: 145px; /* Space for bottom nav + floating cart */
+  }
+
+  /* Simplify top navbar on mobile to Brand + Dark Mode button only */
+  .navbar-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-links a {
+    display: none;
+  }
+
+  /* Fixed App-Style Bottom Navigation Bar */
+  .mobile-bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid var(--border);
+    padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+    z-index: 990;
+  }
+
+  .mobile-bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    transition: color 0.2s;
+  }
+
+  .mobile-bottom-nav a.active {
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+
+  /* Sit Floating Cart directly above Mobile Bottom Nav */
+  .floating-cart-bar.visible {
+    bottom: 74px;
+  }
+
+  /* Native Bottom-Sheet Slide-Up for Dish Preview on Phones */
+  .dish-modal-overlay {
+    align-items: flex-end;
+  }
+
+  .dish-modal-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0;
+  }
 }

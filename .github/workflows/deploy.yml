@@ -12,7 +12,6 @@ permissions:
   id-token: write
 
 jobs:
-  # JOB 1: CI Check (2 spaces indent)
   check-pages:
     name: Check Menu, Cart & Shared Files
     runs-on: ubuntu-latest
@@ -26,30 +25,31 @@ jobs:
             "index.html" \
             "shared/style.css" \
             "shared/utils.js" \
-            "menu-page/index.html" \
-            "menu-page/menu.js" \
-            "cart-page/index.html" \
-            "cart-page/cart.js"; do
+            "menu-page/index.html" "menu-page/menu.js" \
+            "cart-page/index.html" "cart-page/cart.js" \
+            "login-page/index.html" "login-page/login.js" \
+            "profile-page/index.html" "profile-page/profile.js"; do
             if [ ! -f "$file" ]; then
               echo "ERROR: $file is missing!"
               exit 1
             fi
           done
-          echo "All root, shared, menu-page, and cart-page files exist!"
+          echo "All customer app files verified!"
 
       - name: Check JavaScript syntax
         run: |
           node --check shared/utils.js
           node --check menu-page/menu.js
           node --check cart-page/cart.js
+          node --check login-page/login.js
+          node --check profile-page/profile.js
           echo "No JavaScript syntax errors found!"
 
       - name: Check HTML files for errors
         run: |
-          npx htmlhint index.html menu-page/index.html cart-page/index.html
+          npx htmlhint index.html menu-page/index.html cart-page/index.html login-page/index.html profile-page/index.html
           echo "All HTML files passed!"
 
-  # JOB 2: CD Deploy (2 spaces indent — aligned with check-pages)
   deploy-site:
     name: Deploy to GitHub Pages
     needs: check-pages
@@ -66,7 +66,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          cp -r shared menu-page cart-page _site/
+          cp -r shared menu-page cart-page login-page profile-page _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

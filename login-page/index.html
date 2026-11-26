@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Security-Policy" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login with 2FA - FoodApp</title>
+    <link rel="stylesheet" href="../shared/style.css" />
+  </head>
+  <body data-root="..">
+    <main class="container" style="max-width: 460px">
+      <div class="card" id="step-credentials">
+        <h1>Sign In</h1>
+        <p class="card-desc">
+          Step 1 of 2: Enter your account details to generate a 2FA security code.
+        </p>
+
+        <input
+          type="text"
+          id="login-name"
+          class="search-input"
+          placeholder="Full Name (e.g., Ramcharan)"
+          style="margin-bottom: 12px"
+        />
+        <input
+          type="email"
+          id="login-email"
+          class="search-input"
+          placeholder="Email Address"
+          style="margin-bottom: 12px"
+        />
+        <input
+          type="password"
+          id="login-pass"
+          class="search-input"
+          placeholder="Password"
+          style="margin-bottom: 16px"
+        />
+
+        <button class="btn btn-full" onclick="sendTwoFactorCode()">Continue & Send 2FA Code</button>
+      </div>
+
+      <div class="card" id="step-2fa" style="display: none">
+        <span class="badge">Two-Factor Authentication</span>
+        <h1>Verify 6-Digit OTP</h1>
+        <p class="card-desc" id="otp-hint">
+          Enter the 6-digit verification code sent to your device.
+        </p>
+
+        <input
+          type="text"
+          id="otp-input"
+          class="search-input"
+          maxlength="6"
+          placeholder="000000"
+          style="
+            margin-bottom: 16px;
+            letter-spacing: 6px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-align: center;
+          "
+        />
+
+        <button class="btn btn-full" onclick="verifyTwoFactorCode()">Verify & Login</button>
+        <button class="pill" style="margin-top: 10px; width: 100%" onclick="resetLogin()">
+          Back to Credentials
+        </button>
+      </div>
+    </main>
+
+    <script src="../shared/utils.js"></script>
+    <script src="./login.js"></script>
+  </body>
+</html>
