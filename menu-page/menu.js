@@ -5,16 +5,20 @@ const allMenuItems = [
     category: "Biryani",
     veg: false,
     price: 260,
-    desc: "Aromatic basmati rice layered with spiced tender chicken.",
+    desc: "Aromatic basmati rice layered with spiced tender chicken.", // <-- Comma added
+    image: "https://pexels.com" // <-- Quotes added
   },
+
   {
-    id: 2,
+    id: 2, // keep your original id
     name: "Paneer Butter Masala",
     category: "North Indian",
     veg: true,
-    price: 220,
+    price: 240, // keep your original price
     desc: "Cottage cheese cubes simmered in rich creamy tomato gravy.",
+    image: "https://pexels.com"
   },
+
   {
     id: 3,
     name: "Ghee Roast Masala Dosa",
@@ -22,6 +26,7 @@ const allMenuItems = [
     veg: true,
     price: 110,
     desc: "Crispy golden dosa stuffed with spiced potato masala.",
+    image: "https://wikimedia.org"
   },
   {
     id: 4,
@@ -29,7 +34,7 @@ const allMenuItems = [
     category: "Biryani",
     veg: false,
     price: 290,
-    desc: "Slow-cooked wheat, lentils, and tender mutton with fried onions.",
+    desc: "Slow-cooked wheat, lentils, and tender mutton with fried onions."
   },
   {
     id: 5,
@@ -37,7 +42,7 @@ const allMenuItems = [
     category: "North Indian",
     veg: true,
     price: 75,
-    desc: "Soft tandoori flatbread brushed with melted butter.",
+    desc: "Soft tandoori flatbread brushed with melted butter."
   },
   {
     id: 6,
@@ -45,7 +50,7 @@ const allMenuItems = [
     category: "Dessert",
     veg: true,
     price: 120,
-    desc: "Traditional Hyderabadi bread pudding soaked in saffron milk.",
+    desc: "Traditional Hyderabadi bread pudding soaked in saffron milk."
   },
   {
     id: 7,
@@ -53,7 +58,7 @@ const allMenuItems = [
     category: "Starters",
     veg: false,
     price: 210,
-    desc: "Crispy spicy deep-fried chicken bites tossed with curry leaves.",
+    desc: "Crispy spicy deep-fried chicken bites tossed with curry leaves."
   },
   {
     id: 8,
@@ -61,7 +66,7 @@ const allMenuItems = [
     category: "Starters",
     veg: true,
     price: 160,
-    desc: "Crispy vegetable dumplings tossed in tangy garlic soy sauce.",
+    desc: "Crispy vegetable dumplings tossed in tangy garlic soy sauce."
   },
   {
     id: 9,
@@ -69,7 +74,7 @@ const allMenuItems = [
     category: "South Indian",
     veg: true,
     price: 70,
-    desc: "Steamed fluffy rice cakes served with hot lentil sambar.",
+    desc: "Steamed fluffy rice cakes served with hot lentil sambar."
   },
   {
     id: 10,
@@ -77,7 +82,7 @@ const allMenuItems = [
     category: "Starters",
     veg: false,
     price: 280,
-    desc: "Char-grilled chicken marinated in yogurt and smoky spices.",
+    desc: "Char-grilled chicken marinated in yogurt and smoky spices."
   },
   {
     id: 11,
@@ -85,7 +90,7 @@ const allMenuItems = [
     category: "North Indian",
     veg: true,
     price: 170,
-    desc: "Cumin-tempered rice paired with yellow lentils.",
+    desc: "Cumin-tempered rice paired with yellow lentils."
   },
   {
     id: 12,
@@ -93,7 +98,7 @@ const allMenuItems = [
     category: "Beverages",
     veg: true,
     price: 60,
-    desc: "Creamy Hyderabadi tea served with sweet-and-salty biscuits.",
+    desc: "Creamy Hyderabadi tea served with sweet-and-salty biscuits."
   },
   {
     id: 13,
@@ -101,7 +106,7 @@ const allMenuItems = [
     category: "Dessert",
     veg: true,
     price: 90,
-    desc: "Warm milk-solid dumplings soaked in cardamom sugar syrup.",
+    desc: "Warm milk-solid dumplings soaked in cardamom sugar syrup."
   },
   {
     id: 14,
@@ -109,8 +114,8 @@ const allMenuItems = [
     category: "Beverages",
     veg: true,
     price: 95,
-    desc: "Chilled thick yogurt smoothie blended with sweet mango.",
-  },
+    desc: "Chilled thick yogurt smoothie blended with sweet mango."
+  }
 ];
 
 const menuContainer = document.getElementById("menu-list");
@@ -175,19 +180,31 @@ function loadNextBatch() {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <div>
-        <div class="diet-badge">
-          <span class="diet-dot ${item.veg ? "diet-veg" : "diet-nonveg"}"></span>
-          <span>${item.veg ? "VEG" : "NON-VEG"} • ${item.category}</span>
-        </div>
-        <h3 class="card-title">${item.name}</h3>
-        <p class="card-desc">${item.desc}</p>
+    <div style="cursor: pointer;" onclick='openDishPreview(${JSON.stringify(item)})'>
+      <div class="diet-badge">
+        <span class="diet-dot ${item.veg ? "diet-veg" : "diet-nonveg"}"></span>
+        <span>${item.veg ? "VEG" : "NON-VEG"} • ${item.category}</span>
       </div>
-      <div>
-        <p class="price-tag">${formatPrice(item.price)}</p>
-        <button class="btn btn-full" onclick="handleAdd(${item.id})">Add to Cart</button>
-      </div>
-    `;
+      <h3 class="card-title">${item.name}</h3>
+      <p class="card-desc">${item.desc}</p>
+    </div>
+    <div>
+      <p class="price-tag">${formatPrice(item.price)}</p>
+      <button class="btn btn-full" onclick="handleAdd(${item.id})">Add to Cart</button>
+    </div>
+  `;
+
+    const imgEl = card.querySelector(".dish-img");
+    if (imgEl) {
+      imgEl.addEventListener(
+        "error",
+        () => {
+          imgEl.outerHTML = `<div class="dish-fallback">${item.category}</div>`;
+        },
+        { once: true }
+      );
+    }
+
     menuContainer.appendChild(card);
   });
 
@@ -210,7 +227,7 @@ const observer = new IntersectionObserver(
   (entries) => {
     if (entries[0].isIntersecting) setTimeout(loadNextBatch, 200);
   },
-  { rootMargin: "100px" },
+  { rootMargin: "100px" }
 );
 
 // Auto-select category if user clicked a shortcut on the Home page

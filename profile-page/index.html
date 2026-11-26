@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Security-Policy" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile - FoodApp</title>
+    <link rel="stylesheet" href="../shared/style.css" />
+  </head>
+  <body data-root="..">
+    <main class="container">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-bottom: 16px;
+        "
+      >
+        <h1>My Account</h1>
+        <button class="btn btn-danger" onclick="logoutUser()">Logout</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchProfileTab('details', this)">
+          Profile Details
+        </button>
+        <button class="tab-btn" onclick="switchProfileTab('addresses', this)">
+          Saved Addresses
+        </button>
+        <button class="tab-btn" onclick="switchProfileTab('orders', this)">Order History</button>
+        <button class="tab-btn" onclick="switchProfileTab('wallet', this)">FoodApp Wallet</button>
+      </div>
+
+      <div id="paymentModal" class="payment-overlay">
+        <div class="payment-modal">
+          <div class="payment-header">
+            <span class="badge">DEMO GATEWAY</span>
+            <h3>Complete Payment</h3>
+          </div>
+          <p id="paymentText">Pay ₹0 to top up your wallet?</p>
+          <div class="payment-actions">
+            <button id="cancelPayBtn" class="btn-cancel">Cancel</button>
+            <button id="confirmPayBtn" class="btn-pay">Pay Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="profile-content"></div>
+    </main>
+
+    <script src="../shared/utils.js"></script>
+    <script src="./profile.js"></script>
+  </body>
+</html>

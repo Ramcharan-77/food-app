@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta http-equiv="Content-Security-Policy" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cart - FoodApp</title>
@@ -13,14 +14,13 @@
       <div
         id="free-delivery-banner"
         class="card"
-        style="margin-bottom: 16px; background: #fff7ed; border-color: #fed7aa"
+        style="margin-bottom: 16px; border-color: none"
       ></div>
 
       <div id="cart-list" style="display: flex; flex-direction: column; gap: 12px"></div>
 
-      <!-- Bill Summary & Checkout Card -->
       <div id="bill-box" class="card" style="margin-top: 24px; display: none">
-        <h2 style="font-size: 1.2rem; margin-bottom: 8px">Bill Details</h2>
+        <h2 style="font-size: 1.2rem; margin-bottom: 8px">Bill Details & Checkout</h2>
         <div class="summary-row"><span>Item Total</span><span id="sub-total">₹0.00</span></div>
         <div class="summary-row"><span>Delivery Fee</span><span id="delivery-fee">₹0.00</span></div>
         <div class="summary-row"><span>Taxes (5% GST)</span><span id="tax-amount">₹0.00</span></div>
@@ -28,13 +28,29 @@
           <span>To Pay</span><span id="grand-total">₹0.00</span>
         </div>
 
+        <div id="saved-addr-picker" style="margin-top: 12px"></div>
         <input
           type="text"
           id="address-input"
           class="search-input"
           placeholder="Enter delivery address (e.g., Madhapur, Hyderabad)"
-          style="margin: 12px 0"
+          style="margin: 10px 0"
         />
+
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0 16px;
+            font-weight: 600;
+            cursor: pointer;
+          "
+        >
+          <input type="checkbox" id="use-wallet-checkbox" />
+          <span id="wallet-label">Pay using FoodApp Wallet</span>
+        </label>
+
         <button class="btn btn-full" onclick="handleCheckout()">Place Order</button>
       </div>
     </main>
